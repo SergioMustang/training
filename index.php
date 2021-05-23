@@ -11,6 +11,7 @@ include_once 'api/postPerson.php';
 include_once 'api/patchPerson.php';
 include_once 'api/deletePerson.php';
 
+
 // получаем соединение с базой данных
 $database = new Database();
 $db = $database->getConnection();

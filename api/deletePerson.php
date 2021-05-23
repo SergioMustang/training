@@ -41,7 +41,7 @@ class patchPerson
                     exit;
                 } else {
                     echo "Успешно изменено! <br>";
-                }
+                } 
             }
         }
     }
