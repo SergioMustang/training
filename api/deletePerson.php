@@ -1,11 +1,11 @@
 <?php
 
-class patchPerson
+class deletePerson
 {
     private $error_flag = FALSE;
     private $empty_info = NULL;
 
-    public function patch_request($db)
+    public function delete_request($db)
     {
         $list_of_attributes_to_change = array();
         $person_id = !empty($_GET['person_id']) ? $_GET['person_id'] : $this->error_flag = TRUE .
