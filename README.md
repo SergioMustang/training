@@ -1,2 +1,2 @@
-# training
+# Training
 Inspiration and experimentation repository
