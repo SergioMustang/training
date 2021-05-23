@@ -8,6 +8,7 @@ include_once 'api/getConnection.php';
 include_once 'api/getMethod.php';
 include_once 'api/getPerson.php';
 include_once 'api/postPerson.php';
+include_once 'api/patchPerson.php';
 
 // получаем соединение с базой данных
 $database = new Database();
@@ -23,7 +24,8 @@ if ($Method == 'GET') {
     $myRequest = new postPerson();
     $myRequest->post_request($db);
 } elseif ($Method == 'PATCH') {
-    echo $Method;
+    $myRequest = new patchPerson();
+    $myRequest->patch_request($db);
 } elseif ($Method == 'DELETE') {
     echo $Method;
 }
