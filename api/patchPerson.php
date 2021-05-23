@@ -8,7 +8,10 @@ class patchPerson
     public function patch_request($db)
     {
         $list_of_attributes_to_change = array();
+<<<<<<< HEAD
         $list_of_values = array();
+=======
+>>>>>>> e32ce52181e7aa6c043d22735c57207ae428bcc1
         $person_id = !empty($_GET['person_id']) ? $_GET['person_id'] : $this->error_flag = TRUE .
             $this->empty_info .= 'ID не передан! </br>';
         if (!empty($_GET['person_email'])) {
