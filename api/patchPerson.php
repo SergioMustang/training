@@ -9,7 +9,6 @@ class patchPerson
     {
         $list_of_attributes_to_change = array();
         $list_of_values = array();
-
         $person_id = !empty($_GET['person_id']) ? $_GET['person_id'] : $this->error_flag = TRUE .
             $this->empty_info .= 'ID не передан! </br>';
         if (!empty($_GET['person_email'])) {
