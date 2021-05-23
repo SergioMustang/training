@@ -29,7 +29,8 @@ if ($Method == 'GET') {
     $myRequest = new patchPerson();
     $myRequest->patch_request($db);
 } elseif ($Method == 'DELETE') {
-    echo $Method;
+    $myRequest = new deletePerson();
+    $myRequest->delete_request($db);
 }
 else {
     echo 'Здесь будет код ошибки';
