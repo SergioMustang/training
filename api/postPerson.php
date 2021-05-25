@@ -1,41 +1,65 @@
 <?php
+include_once 'api/uuitGeneration.php';
 
 class postPerson
 {
-
-    private $person_email;
-    private $person_name;
-    private $person_lastname;
-    private $person_age;
     private $error_flag = FALSE;
-    private $empty_info = NULL;
+    private $error_info = array();
 
     public function post_request($db)
     {
-        $this->person_email = !empty($_GET['person_email']) ? $_GET['person_email'] : $this->error_flag = TRUE .
-            $this->empty_info .= 'E-mail не передан! </br>';
-        $this->person_name = !empty($_GET['person_name']) ? $_GET['person_name'] : $this->error_flag = TRUE .
-            $this->empty_info .= 'Имя не передано! </br>';
-        $this->person_lastname = !empty($_GET['person_lastname']) ? $_GET['person_lastname'] : $this->error_flag = TRUE .
-            $this->empty_info .= 'Фамилия не передана! </br> ';
-        $this->person_age = !empty($_GET['person_age']) ? $_GET['person_age'] : $this->error_flag = TRUE .
-            $this->empty_info .= 'Возраст не передан! </br>';
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $person_email = $data["person_email"];
+        $person_name = $data["person_name"];
+        $person_lastname = $data["person_lastname"];
+        $person_age = $data["person_age"];
+
+        if (empty($person_email)) {
+            $this->error_info[] = 'E-mail not entered!';
+            $this->error_flag = TRUE;
+        }
+        if (empty($person_name)) {
+            $this->error_info[] = 'Name not entered!';
+            $this->error_flag = TRUE;
+        }
+        if (empty($person_lastname)) {
+            $this->error_info[] = 'Lastname not entered!';
+            $this->error_flag = TRUE;
+        }
+        if (empty($person_age)) {
+            $this->error_info[] = 'Age not entered!';
+            $this->error_flag = TRUE;
+        }
+
 
         if ($this->error_flag == TRUE) {
-            echo "Ошибка!</br>";
-            echo $this->empty_info;
+            http_response_code(400);
+            $json_reply = array("error" => $this->error_info[0]);
+            echo json_encode($json_reply);
             exit;
+
         } else {
+            $uuit_Generator = new  uuitGeneration;
+            $uuit = $uuit_Generator->genUuit();
+
             $query_string = "INSERT INTO person (person_id, person_email, person_name,
                 person_lastname, person_age)
-            VALUES (nextval('person_id_seq'),'" . $this->person_email . "','" . $this->person_name . "','" . $this->person_lastname .
-                "'," . $this->person_age . ")";
+            VALUES ('" . $uuit . "','" . $person_email . "','" . $person_name . "','" . $person_lastname .
+                "','" . $person_age . "')";
             $result = pg_query($db, $query_string);
             if (!$result) {
-                echo "Произошла ошибка.\n";
+                http_response_code(400);
+                $this->error_info[] = "Data type error";
+                $json_reply = array("error" => $this->error_info[0]);
+                echo json_encode($json_reply);
                 exit;
             } else {
-                echo "\nУспешно добавлено!";
+                http_response_code(201);
+                $success = array();
+                $success[] = $uuit;
+                $json_reply = array("uuid" => $success[0]);
+                echo json_encode($json_reply);
             }
         }
     }
