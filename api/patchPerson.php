@@ -1,4 +1,5 @@
 <?php
+include_once 'api/idCheck.php';
 
 class patchPerson
 {
@@ -39,14 +40,9 @@ class patchPerson
             $list_of_attributes_to_change[] = 'person_age';
         }
 
-        $check = pg_query($db, "SELECT* FROM person WHERE person_id = '" . $person_id . "'");
-        if (!$row = pg_fetch_array($check)) {
-            http_response_code(404);
-            $this->error_info[] = "ID not found!";
-            $json_reply = array("error" => $this->error_info[0]);
-            echo json_encode($json_reply);
-            exit;
-        }
+        $idFounded = new idChecking();
+        $idFounded = $idFounded->idCheck($db, $person_id);
+
         foreach ($list_of_attributes_to_change as $attribute_name) {
             $query_string = "UPDATE person SET " . $attribute_name . " = '" . $$attribute_name .
                 "' WHERE person_id = '" . $person_id . "'";
@@ -60,7 +56,6 @@ class patchPerson
             exit;
         } else {
             http_response_code(201);
-            $success = array();
         }
     }
 }
