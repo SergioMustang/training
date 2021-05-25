@@ -8,8 +8,10 @@ class postPerson
 
     public function post_request($db)
     {
+        //Считываем входные данные
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
+
         $person_email = $data["person_email"];
         $person_name = $data["person_name"];
         $person_lastname = $data["person_lastname"];
