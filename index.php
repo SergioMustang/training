@@ -1,8 +1,4 @@
 <?php
-// необходимые HTTP-заголовки
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-
 // подключение базы данных и файл, содержащий объекты
 include_once 'api/getConnection.php';
 include_once 'api/getMethod.php';
@@ -10,7 +6,6 @@ include_once 'api/getPerson.php';
 include_once 'api/postPerson.php';
 include_once 'api/patchPerson.php';
 include_once 'api/deletePerson.php';
-
 
 // получаем соединение с базой данных
 $database = new Database();
@@ -31,13 +26,7 @@ if ($Method == 'GET') {
 } elseif ($Method == 'DELETE') {
     $myRequest = new deletePerson();
     $myRequest->delete_request($db);
-}
-else {
+} else {
     echo 'Здесь будет код ошибки';
 }
-
-// инициализируем объект
-//$product = new Product($db);
-
-// чтение товаров будет здесь
 ?>
