@@ -10,7 +10,7 @@ class getPerson
         if (empty($person_id)) {
             $result = pg_query($db, "SELECT* FROM person");
         } else {
-            $result = pg_query($db, "SELECT* FROM person WHERE person_id = " . $person_id);
+            $result = pg_query($db, "SELECT* FROM person WHERE person_id = '" . $person_id . "'");
         }
         if ($row = pg_fetch_array($result)) {
             $json_reply = array("id" => $row[0], "E-mail" => $row[1], "Name" => $row[2],
