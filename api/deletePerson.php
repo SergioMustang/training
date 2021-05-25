@@ -1,4 +1,5 @@
 <?php
+include_once 'api/idCheck.php';
 
 class deletePerson
 {
@@ -6,19 +7,23 @@ class deletePerson
 
     public function delete_request($db)
     {
-        if (!empty($_GET['person_id'])) {
-            $person_id = $_GET['person_id'];
-        } else {
-            echo "Ошибка!</br>";
-            exit;
-        }
-        $query_string = "DELETE FROM person WHERE person_id = " . $person_id;
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $person_id = $data["person_id"];
+
+        $idFounded = new idChecking();
+        $idFounded = $idFounded->idCheck($db, $person_id);
+
+        $query_string = "DELETE FROM person WHERE person_id = '" . $person_id . "'";
         $result = pg_query($db, $query_string);
+
         if (!$result) {
-            echo "Произошла ошибка.\n";
+            http_response_code(400);
+            $json_reply = array("error" => "Data type error");
+            echo json_encode($json_reply);
             exit;
         } else {
-            echo "Успешно удалено! <br>";
+            http_response_code(204);
         }
     }
 }
